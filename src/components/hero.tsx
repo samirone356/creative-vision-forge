@@ -27,6 +27,9 @@ export function Hero() {
         ? { duration: 0 }
         : { delayChildren: 0.2, staggerChildren: 0.06 },
     },
+    hover: {
+      transition: { staggerChildren: 0.02 },
+    },
   };
 
   // Transform + opacity only: both run on the compositor, so the giant
@@ -38,10 +41,31 @@ export function Hero() {
       opacity: 1,
       transition: reduce ? { duration: 0 } : { duration: 0.9, ease: EASE },
     },
+    hover: {
+      y: "0%",
+      opacity: 1,
+    },
+  };
+
+  // Outer "o" letters stretch vertically on hover (overflow-hidden parent
+  // clips horizontal stretch, so scaleY keeps the effect inside bounds).
+  const letterO: Variants = {
+    hidden: reduce ? { y: 0, opacity: 1 } : { y: "115%", opacity: 0 },
+    show: {
+      y: "0%",
+      opacity: 1,
+      transition: reduce ? { duration: 0 } : { duration: 0.9, ease: EASE },
+    },
+    hover: {
+      scaleX: 0.85,
+      scaleY: 1.45,
+      transition: { type: "spring", stiffness: 300, damping: 15 },
+    },
   };
 
   // The stadium "o" scales on the X axis instead of animating `width`,
   // which used to force a layout pass on every frame of the headline.
+  // On hover it stretches horizontally while the outer o's stretch vertically.
   const pill: Variants = {
     hidden: reduce ? { scaleX: 1, opacity: 1 } : { scaleX: 0.14, opacity: 0 },
     show: {
@@ -50,6 +74,11 @@ export function Hero() {
       transition: reduce
         ? { duration: 0 }
         : { duration: 1.05, ease: EASE, times: [0, 0.7, 1] },
+    },
+    hover: {
+      scaleX: 1.55,
+      scaleY: 0.8,
+      transition: { type: "spring", stiffness: 300, damping: 15 },
     },
   };
 
@@ -69,15 +98,19 @@ export function Hero() {
         <h1 className="sr-only">Mostafa Samir — Healthcare Full-Stack Engineer Portfolio 2026</h1>
         <motion.div
           aria-hidden
-          className="flex w-full items-center justify-center overflow-hidden font-display leading-[0.8] font-extrabold tracking-[-0.05em] text-foreground"
+          className="flex w-full cursor-default items-center justify-center overflow-hidden font-display leading-[0.8] font-extrabold tracking-[-0.05em] text-foreground"
           style={{ fontSize: "clamp(3.5rem, 15.5vw, 13rem)" }}
           variants={wordmark}
           initial="hidden"
           animate="show"
+          whileHover="hover"
         >
           {WORD_BEFORE.map((c, i) => (
             <span key={`b-${i}`} className="inline-block overflow-hidden pb-[0.06em]">
-              <motion.span className="inline-block transform-gpu" variants={letter}>
+              <motion.span
+                className={`inline-block transform-gpu ${c === "o" ? "origin-center" : ""}`}
+                variants={c === "o" ? letterO : letter}
+              >
                 {c}
               </motion.span>
             </span>
@@ -92,7 +125,10 @@ export function Hero() {
 
           {WORD_AFTER.map((c, i) => (
             <span key={`a-${i}`} className="inline-block overflow-hidden pb-[0.06em]">
-              <motion.span className="inline-block transform-gpu" variants={letter}>
+              <motion.span
+                className={`inline-block transform-gpu ${c === "o" ? "origin-center" : ""}`}
+                variants={c === "o" ? letterO : letter}
+              >
                 {c}
               </motion.span>
             </span>
