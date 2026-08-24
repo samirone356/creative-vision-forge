@@ -315,10 +315,6 @@
   box-shadow: var(--shadow-slide);
 }
 
-@utility hero-sky {
-  background-color: color-mix(in oklab, var(--brand-sky) 25%, var(--surface));
-}
-
 @utility lift {
   transition:
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
