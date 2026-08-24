@@ -113,7 +113,7 @@ export function Hero() {
             hero image paints on the very first frame instead of waiting for
             hydration behind an opacity-0 motion variant. */}
         <div className="hero-rise relative mt-8 transform-gpu sm:mt-10">
-          <div className="slide-card relative overflow-hidden rounded-[2rem] bg-brand-sky/25 p-3 sm:rounded-[2.5rem] sm:p-4">
+          <div className="slide-card relative overflow-hidden rounded-[2rem] p-3 sm:rounded-[2.5rem] sm:p-4">
             <div className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-brand-sky/40 sm:rounded-[2rem]">
               <Parallax strength={-18} className="absolute inset-[-6%]">
                 <img
