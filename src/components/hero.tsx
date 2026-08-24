@@ -27,6 +27,9 @@ export function Hero() {
         ? { duration: 0 }
         : { delayChildren: 0.2, staggerChildren: 0.06 },
     },
+    hover: {
+      transition: { staggerChildren: 0.02 },
+    },
   };
 
   // Transform + opacity only: both run on the compositor, so the giant
