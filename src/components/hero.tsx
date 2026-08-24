@@ -98,15 +98,19 @@ export function Hero() {
         <h1 className="sr-only">Mostafa Samir — Healthcare Full-Stack Engineer Portfolio 2026</h1>
         <motion.div
           aria-hidden
-          className="flex w-full items-center justify-center overflow-hidden font-display leading-[0.8] font-extrabold tracking-[-0.05em] text-foreground"
+          className="flex w-full cursor-default items-center justify-center overflow-hidden font-display leading-[0.8] font-extrabold tracking-[-0.05em] text-foreground"
           style={{ fontSize: "clamp(3.5rem, 15.5vw, 13rem)" }}
           variants={wordmark}
           initial="hidden"
           animate="show"
+          whileHover="hover"
         >
           {WORD_BEFORE.map((c, i) => (
             <span key={`b-${i}`} className="inline-block overflow-hidden pb-[0.06em]">
-              <motion.span className="inline-block transform-gpu" variants={letter}>
+              <motion.span
+                className={`inline-block transform-gpu ${c === "o" ? "origin-center" : ""}`}
+                variants={c === "o" ? letterO : letter}
+              >
                 {c}
               </motion.span>
             </span>
@@ -121,7 +125,10 @@ export function Hero() {
 
           {WORD_AFTER.map((c, i) => (
             <span key={`a-${i}`} className="inline-block overflow-hidden pb-[0.06em]">
-              <motion.span className="inline-block transform-gpu" variants={letter}>
+              <motion.span
+                className={`inline-block transform-gpu ${c === "o" ? "origin-center" : ""}`}
+                variants={c === "o" ? letterO : letter}
+              >
                 {c}
               </motion.span>
             </span>
