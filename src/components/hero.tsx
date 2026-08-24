@@ -63,7 +63,7 @@ export function Hero() {
   });
 
   return (
-    <section id="top" className="relative overflow-hidden bg-brand-sky/25 px-4 pt-10 sm:px-6 lg:pt-14">
+    <section id="top" className="relative overflow-hidden px-4 pt-10 sm:px-6 lg:pt-14">
       <div className="relative mx-auto max-w-6xl">
         {/* Giant wordmark */}
         <h1 className="sr-only">Mostafa Samir — Healthcare Full-Stack Engineer Portfolio 2026</h1>
