@@ -72,25 +72,45 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const FONT_HREF =
+  "https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Muh. Yasin — Creative Portfolio 2026" },
+      {
+        name: "description",
+        content: "Illustration, motion and 2D–3D visual storytelling by Muh. Yasin.",
+      },
+      { name: "author", content: "Muh. Yasin" },
+      { property: "og:title", content: "Muh. Yasin — Creative Portfolio 2026" },
+      {
+        property: "og:description",
+        content: "Illustration, motion and 2D–3D visual storytelling by Muh. Yasin.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        // Matches the families actually used by --font-display / --font-sans.
+        // media="print" keeps it off the critical path; the script below
+        // promotes it to "all" once the sheet has loaded.
+        rel: "stylesheet",
+        href: FONT_HREF,
+        media: "print",
+        "data-font-css": "true",
+      },
+
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -100,11 +120,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+const themeInitScript = `(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`;
+
+// Promotes the deferred web-font stylesheet once it is available, so fonts
+// never block first paint but still swap in as soon as they arrive.
+const fontActivateScript = `(function(){function a(){var l=document.querySelector('link[data-font-css]');if(l)l.media='all';}if(document.readyState!=='loading'){requestAnimationFrame(a);}else{document.addEventListener('DOMContentLoaded',a);}})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: fontActivateScript }} />
+
+        <noscript>
+          <link rel="stylesheet" href={FONT_HREF} />
+        </noscript>
       </head>
       <body>
         {children}
@@ -113,6 +145,7 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
