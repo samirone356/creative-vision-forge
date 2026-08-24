@@ -63,17 +63,7 @@ export function Hero() {
   });
 
   return (
-    <section id="top" className="relative overflow-hidden px-4 pt-10 sm:px-6 lg:pt-14">
-      <div
-        aria-hidden
-        className="drift-blob pointer-events-none absolute -top-28 right-0 size-80 rounded-full bg-brand-orange/15 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="drift-blob pointer-events-none absolute -bottom-32 -left-24 size-96 rounded-full bg-brand-sky/20 blur-3xl"
-        style={{ animationDelay: "-6s" }}
-      />
-
+    <section id="top" className="relative overflow-hidden bg-brand-sky/25 px-4 pt-10 sm:px-6 lg:pt-14">
       <div className="relative mx-auto max-w-6xl">
         {/* Giant wordmark */}
         <h1 className="sr-only">Mostafa Samir — Healthcare Full-Stack Engineer Portfolio 2026</h1>
