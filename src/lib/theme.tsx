@@ -44,7 +44,10 @@ function getStoredTheme(): Theme {
  */
 function applyTheme(resolved: ResolvedTheme, animate: boolean) {
   const root = document.documentElement;
-  if (animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // When the toggle drives a View Transition wipe, skip the per-element color
+  // fade so the two effects don't overlap and muddy each other.
+  const revealing = root.dataset["themeReveal"] === "on";
+  if (animate && !revealing && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     root.dataset["themeTransition"] = "on";
     window.setTimeout(() => {
       delete root.dataset["themeTransition"];
