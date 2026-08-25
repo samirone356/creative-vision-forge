@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
