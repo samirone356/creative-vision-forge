@@ -175,6 +175,77 @@
     font-weight: 400;
     letter-spacing: 0.01em;
   }
+
+  /* ---- Branded scrollbars (global) ------------------------------------ */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--signal) color-mix(in oklab, var(--ink) 8%, transparent);
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: color-mix(in oklab, var(--ink) 6%, transparent);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    background-color: color-mix(in oklab, var(--signal) 72%, var(--ink) 10%);
+    transition:
+      background-color 240ms ease,
+      border-width 240ms ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--signal);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--signal-dark);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Slimmer variant for inner scrollable panels */
+@utility scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--signal) 80%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    background-color: color-mix(in oklab, var(--signal) 65%, transparent);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--signal);
+  }
 }
 
 @utility text-outline-ink {
@@ -299,5 +370,25 @@ html[data-theme-transition="on"] *::after {
   html[data-theme-transition="on"] *::before,
   html[data-theme-transition="on"] *::after {
     transition: none !important;
+  }
+}
+
+@keyframes toggle-ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="toggle-ripple"] {
+    animation: none !important;
   }
 }
