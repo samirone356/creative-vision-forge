@@ -12,15 +12,25 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   const { theme, resolved, toggle } = useTheme();
   const prefersReducedMotion = useReducedMotion();
   const isDark = resolved === "dark";
+  const [pulse, setPulse] = useState(0);
 
-  const duration = prefersReducedMotion ? 0 : 500;
+  const duration = prefersReducedMotion ? 0 : 620;
+  const spring = "cubic-bezier(0.22, 1.4, 0.36, 1)";
   const next = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
 
   const iconStyle = (active: boolean, from: string) => ({
-    transform: active ? "rotate(0deg) scale(1)" : `${from} scale(0.5)`,
+    transform: active ? "rotate(0deg) scale(1) translateY(0)" : `${from} scale(0.35) translateY(6px)`,
     opacity: active ? 1 : 0,
-    transition: `transform ${duration}ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity ${duration}ms ease`,
+    filter: active ? "blur(0px)" : "blur(3px)",
+    transition: prefersReducedMotion
+      ? "none"
+      : `transform ${duration}ms ${spring}, opacity ${Math.round(duration * 0.55)}ms ease, filter ${Math.round(duration * 0.55)}ms ease`,
   });
+
+  const handleClick = () => {
+    if (!prefersReducedMotion) setPulse((n) => n + 1);
+    toggle();
+  };
 
   return (
     <button
@@ -29,10 +39,12 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       tabIndex={0}
       aria-label={`Theme: ${LABELS[theme]}. Activate to switch to ${LABELS[next]}.`}
       title={`Theme: ${LABELS[theme]} — click for ${LABELS[next]}`}
-      onClick={toggle}
+      onClick={handleClick}
       className={[
         "group relative inline-flex h-10 w-10 items-center justify-center rounded-full",
-        "border-2 transition-colors duration-300 ease-out",
+        "border-2 transition-[transform,background-color,border-color,box-shadow] duration-500",
+        "[transition-timing-function:cubic-bezier(0.22,1.4,0.36,1)]",
+        "hover:scale-110 active:scale-90",
         "outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-2 focus-visible:ring-offset-ink",
         isDark
           ? "border-cream/20 bg-ink text-cream hover:border-cream/40"
@@ -43,6 +55,17 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       <span aria-live="polite" className="sr-only">
         {LABELS[theme]} theme
       </span>
+
+      {/* Ripple halo fired on each toggle */}
+      {pulse > 0 ? (
+        <span
+          key={pulse}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-full border-2 border-signal"
+          style={{ animation: "toggle-ripple 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards" }}
+        />
+      ) : null}
+
 
       {/* Sun — explicit light */}
       <span
